@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: funhouse-room-room16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      funhouse.riddler/room-id: room16
+  template:
+    metadata:
+      labels:
+        funhouse.riddler/room-id: room16
+    spec:
+      nodeSelector:
+        app: riddler
+      containers:
+        - name: room-site
+          image: 10.38.48.51:5000/riddler-dev/room-site:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+          # ConfigMap is runtime / night-console owned (not in this Flux tree).
+          # STAGE flips here without waiting on git reconcile.
+          envFrom:
+            - configMapRef:
+                name: funhouse-room-room16-stage
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

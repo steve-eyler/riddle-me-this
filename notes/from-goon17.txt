@@ -1,7 +1,7 @@
 Goon17: dump before EOD
 
 Goon42 hits the red button when he's bored. 
-Every shift. Continuous Deployment rollback 
+Every shift. NKP's Continuous Deployment rollback 
 is not a fidget toy. Last time the previous
 prod version bounced back mid-conversation 
 and half the desk thought Traefik ghosted us.
